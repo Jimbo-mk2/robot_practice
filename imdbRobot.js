@@ -45,7 +45,6 @@ async function runBot() {
             PASS: "imdbpass1",
         };
 
-    let inputVars = JSON.parse(String(process.argv[2]));
     /**
      *
      *Initialises the puppeteer browser, headless false is a perameter, means it will open a window so you can see what the robot is doing,

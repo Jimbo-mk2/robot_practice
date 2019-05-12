@@ -1,0 +1,10 @@
+//'{"movie":"Terminator","director":"me"}'
+
+node imdbRobot2.js '{"URL":"https://www.imdb.com/","MOVIE":"The Terminator"}'
+
+#main > div > div:nth-child(3) > table > tbody > tr.findResult.odd > td.primary_photo > a
+
+retrieve:
+RATING
+NUMBER OF REVIEWS
+LENGTH

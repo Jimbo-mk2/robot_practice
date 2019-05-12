@@ -1,13 +1,11 @@
 // JavaScript source code
 const process = require('process');
-console.log(process.argv[2]);
-let jstring = String(process.argv[2]);
-console.log(typeof jstring);
+let parsedString = JSON.parse(String(process.argv[2]));
 
-let parsedjstring = JSON.parse(jstring);
+console.log(parsedString);
+console.log(`is type: ${typeof parsedString}`);
 
-console.log(parsedjstring);
-console.log(typeof parsedjstring);
+
 
 
 
