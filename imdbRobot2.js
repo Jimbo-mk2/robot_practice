@@ -61,7 +61,7 @@ async function runBot() {
         return Promise.reject(utils.buildError("NAVIGATION FAILURE", `${err}`));
     });
 
-    
+
 
     /**
      *
@@ -85,7 +85,8 @@ async function runBot() {
 
     await page.waitForSelector(`div[class=subtext]`);
 
-    scrapedDetails.title = parsedString.MOVIE;
+    scrapedDetails.title = await page.evaluate(() =>
+        document.querySelector('div[class="title_wrapper"] > h1').innerText.trim());
     scrapedDetails.genres = await page.evaluate(() =>
         Array.from(document.querySelectorAll('div.subtext > a')).map( genre =>
             genre.innerText.trim()));
@@ -106,7 +107,7 @@ async function runBot() {
     await page.close();
     await browser.close();
     return process.exit(0);
-   
+
 
 }
 
