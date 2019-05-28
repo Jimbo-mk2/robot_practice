@@ -8,3 +8,5 @@ retrieve:
 RATING
 NUMBER OF REVIEWS
 LENGTH
+
+node imdbRobot3.js '{"URL":"https://www.imdb.com/","UNAME":"jameswaltonmk2@gmail.com","PASS":"imdbpass1"}'
