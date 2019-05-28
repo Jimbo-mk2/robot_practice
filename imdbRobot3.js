@@ -54,8 +54,8 @@ async function runBot() {
     const movieEntriesArray = await page.$$("div[class='lister-item featureFilm']");
 
     for(let movieEntry of movieEntriesArray) {
-        console.log("scraping data")
-;        let title = await movieEntry.$eval("h3[class='lister-item-header']", element => element.innerText.trim());
+        console.log("scraping data");
+        let title = await movieEntry.$eval("h3[class='lister-item-header']", element => element.innerText.trim());
         let genre = await movieEntry.$eval("span[class='genre hidden-xs']", element => element.innerText.trim().split(", "));
         let rating = await movieEntry.$eval("span[class='certificate']", element => element.innerText.trim());
         let duration = await movieEntry.$eval("span[class='runtime']", element => element.innerText.trim());
