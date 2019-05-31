@@ -9,4 +9,4 @@ RATING
 NUMBER OF REVIEWS
 LENGTH
 
-node imdbRobot3.js '{"URL":"https://www.imdb.com/","UNAME":"jameswaltonmk2@gmail.com","PASS":"imdbpass1"}'
+node imdbRobot4.js '{"URL":"https://www.imdb.com/","UNAME":"jameswaltonmk2@gmail.com","PASS":"imdbpass1","MOVIES":["the shawshank redemption", "jaws", "the dark knight", "the godfather", "pulp fiction", "fight club"]}'

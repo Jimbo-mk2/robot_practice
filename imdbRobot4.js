@@ -27,7 +27,7 @@ async function runBot() {
     console.log(`I have arrived at ${await page.url()}, leaving in 5 seconds`);
     await page.waitFor(1000);
 
-    //---------------------LOGIN AND NAVIGATE TO WATCHLIST----------------------------------------------------
+    //--------------------- NAV TO LOGIN PAGE ----------------------------------------------------
            
     await page.click('a[id="imdb-signin-link"]');
     await page.waitForNavigation({ waitUntil: 'load' });
@@ -44,17 +44,41 @@ async function runBot() {
     await page.click('input[id="signInSubmit"]');
     console.log('clicked the button');
 
+    //----------------------- ENTER SEARCH TERMS ---------------------------------
 
-
-    //-----------------------ENTER SEARCH TERM---------------------------------
     for (let movie of movies) {
+
+        let subText = [];
+
         await page.waitForSelector('#navbar-query');
         await page.type('#navbar-query', movie);
-        await page.waitForSelector('#navbar-suggestionsearch > div:nth-child(1) > a > div.navbar-suggestionsearch-poster');
-        await page.click('#navbar-suggestionsearch > div:nth-child(1) > a > div.navbar-suggestionsearch-poster');
-        await page.waitForNavigation({waitUntil: 'load'});
-    }
+        await page.click(`button[id="navbar-submit-button"]`);
+        await page.waitForSelector('td[class="primary_photo"]');
 
+        await page.click('td[class="primary_photo"]');
+
+        await page.waitForSelector('div[class="title_wrapper"]');
+
+        //--------------------------- SCRAPE DATA AND CREATE OBJECT --------------------------
+        let title = await page.evaluate(() =>
+            document.querySelector('div[class="title_wrapper"] > h1').innerText.trim());
+        subText = await page.evaluate(() => document.querySelector('div[class="subtext"]').innerText.split(' | '));
+        let genre = subText[2].split(', ');
+        let release = subText[3];
+        let duration = subText[1];
+        let rating = subText[0];
+
+        const scrapedDetails = {title, genre, rating, duration, release};
+        JSONoutput.push(scrapedDetails);
+    }
+    //--------------------------------- STRINGIFY RESULTS AND WRITE TO FILE ------------------------------
+    const stringyOutput = JSON.stringify(JSONoutput);
+    console.log(stringyOutput);
+
+    fs.appendFile("movies.json", stringyOutput, (err) => {
+        if (err) console.log(err);
+        console.log('writing entries to file');
+    });
 
     await page.close();
     await browser.close();
