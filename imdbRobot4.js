@@ -1,9 +1,9 @@
 
 const
     puppeteer = require('puppeteer'),
-    utils = require('utils'),
     fs = require('fs'),
-    process = require('process');
+    process = require('process'),
+    consume = require('./pupWrap.js');
 
 let browser,
     page;
@@ -17,25 +17,22 @@ let movies = parsedString.MOVIES;
 async function runBot() {
 
     browser = await puppeteer.launch({headless:false});
-
     page = await browser.newPage();
 
-    await page.goto(parsedString.URL).catch((err) => {
-        return Promise.reject(utils.buildError("NAVIGATION FAILURE", `${err}`));
-    });
-
+    await consume.navigate(page, parsedString.URL);
     console.log(`I have arrived at ${await page.url()}, leaving in 5 seconds`);
     await page.waitFor(1000);
 
     //--------------------- NAV TO LOGIN PAGE ----------------------------------------------------
-           
-    await page.click('a[id="imdb-signin-link"]');
-    await page.waitForNavigation({ waitUntil: 'load' });
+
+    await consume.waitThenClick(page, 'a[id="imdb-signin-link"]', 'Sign-in link')
+    await page.waitForNavigation({ waitUntil: ' networkidle2' });
     console.log(`I have arrived at ${await page.url()}`);
 
-    await page.click('a.list-group-item:first-of-type');
+    //await page.click('a.list-group-item:first-of-type');
+    await consume.waitThenClick(page, 'a.list-group-item:first-of-type', 'Sign-in with IMDB link')
     await page.waitForSelector('input[id="ap_password"]');
-    console.log('filling in login creds.');
+    console.log('Found login input fields.');
 
     await page.type('input[id="ap_email"]', parsedString.UNAME);
     await page.type('input[id="ap_password"]', parsedString.PASS);

@@ -13,9 +13,10 @@ let browser,
 
 async function runBot() {
 
-    browser = await puppeteer.launch({headless:false});
+    browser = await puppeteer.launch({headless: false, defaultViewport: null});
 
     page = await browser.newPage();
+    page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36');
 
     await consume.navigate(page, parsedString.URL);
 
@@ -23,7 +24,7 @@ async function runBot() {
     await page.waitFor(1000);
 
     //--------------------- NAV TO LOGIN PAGE ----------------------------------------------------
-
+/*
     await consume.waitThenClick(page, 'a[id="imdb-signin-link"]', 'Sign-in link');
     console.log(`I have arrived at ${await page.url()}`);
 
@@ -34,7 +35,8 @@ async function runBot() {
 
     await page.click('input[id="signInSubmit"]');
     console.log('clicked the button');
-
+    debugger;
+*/
     //----------------------- ENTER SEARCH TERMS ---------------------------------
 
     for (let movie of movies) {
@@ -49,11 +51,7 @@ async function runBot() {
 
         await page.waitForSelector('div[class="title_wrapper"');
 
-        //let title = await page.evaluate(() =>
-        //    document.querySelector('div[class="title_wrapper"] > h1').innerText.trim());
-
         let title = await consume.evaluate(page, 'div[class="title_wrapper"] > h1', 'Header Data');
-
 
         subText = await page.evaluate(() => document.querySelector('div[class="subtext"]').innerText.split(' | '));
         let genre = subText[2].split(', ');
